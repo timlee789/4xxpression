@@ -6,6 +6,7 @@ import { getError } from '../../utils/error';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { signIn, useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 
 function reducer(state, action) {
@@ -45,11 +46,15 @@ export default function AdminCampaignHistoryScreen() {
         fetchOrders();
     },[]);
     
-    const submitHandler = async({ eventname, eventperiod, adreach, visitor, }) => {
+    const submitHandler = async({ campaignname, period, reach, visitor, content}) => {
         try {
-            const id = campaigns[0]._id;
-          await axios.put(`/api/campaign/${id}`, {
-            eventname, eventperiod, adreach, visitor
+           console.log(content, campaignname)
+          await axios.post('/api/campaign/campaignregister', {
+            campaignname, 
+            period, 
+            reach, 
+            visitor, 
+            content
           })
          
           if(result.error) {
@@ -71,34 +76,34 @@ export default function AdminCampaignHistoryScreen() {
                     onSubmit={handleSubmit(submitHandler)}>
              
                 <div className='mb-4'>
-                    <label htmlFor= "eventname">Eventname</label>
+                    <label htmlFor= "campaignname">campaignname</label>
                     <input type="text"
-                    {...register('eventname',{required: 'Please enter eventname', 
+                    {...register('campaignname',{required: 'Please enter campaignname', 
                 })}
-                    className="w-full" id="eventname" autoFocus></input>
-                    {errors.eventname && (
-                    <div className='text-red-500'>{errors.eventname.message}</div>
+                    className="w-full" id="campaignname" autoFocus></input>
+                    {errors.campaignname && (
+                    <div className='text-red-500'>{errors.campaignname.message}</div>
                     )}
                 </div>
                 <div className='mb-4'>
-                    <label htmlFor= "eventperiod">Eventperiod</label>
-                    <input type="eventperiod"
-                    {...register('eventperiod',{required: 'Please enter eventperiod', 
+                    <label htmlFor= "period">period</label>
+                    <input type="period"
+                    {...register('period',{required: 'Please enter period', 
                     
                 })}
-                    className="w-full" id="eventperiod"></input>
-                    {errors.eventperiod && (
-                    <div className='text-red-500'>{errors.eventperiod.message}</div>
+                    className="w-full" id="period"></input>
+                    {errors.period && (
+                    <div className='text-red-500'>{errors.period.message}</div>
                     )}
                 </div>
                 <div className='mb-4'>
-                    <label htmlFor='adreach'>adreach</label>
+                    <label htmlFor='reach'>reach</label>
                     <input type="text" 
-                    {...register('adreach',{required: 'Please enter adreach', 
+                    {...register('reach',{required: 'Please enter reach', 
                     
                 })}
-                    className="w-full" id="adreach" autoFocus></input>
-                    {errors.adreach && (<div className='text-red-500'> {errors.adreach.message}</div>)}
+                    className="w-full" id="reach" autoFocus></input>
+                    {errors.reach && (<div className='text-red-500'> {errors.reach.message}</div>)}
                 </div>
 
                 <div className='mb-4'>
@@ -109,6 +114,17 @@ export default function AdminCampaignHistoryScreen() {
                 })}
                     className="w-full" id="visitor" autoFocus></input>
                     {errors.visitor && (<div className='text-red-500'> {errors.visitor.message}</div>)}
+                   
+                </div>
+
+                <div className='mb-4'>
+                    <label htmlFor='content'>content</label>
+                    <input type="text" 
+                    {...register('content',{required: 'Please enter content', 
+                   
+                })}
+                    className="w-full" id="content" autoFocus></input>
+                    {errors.content && (<div className='text-red-500'> {errors.content.message}</div>)}
                    
                 </div>
 
@@ -128,37 +144,35 @@ export default function AdminCampaignHistoryScreen() {
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead className="border-b">
-            <tr>
-              <th className="px-5 text-left">
+            <tr className="px-5 text-left">
+             
                 <td className="p-5 ">Event Name</td>
                 <td className="p-5 text-left">Event Period</td>
                 <td className="p-5 text-left">AD Reach</td>
                 <td className="p-5 text-left">Landing Page Visitors</td>
                 <td className="p-5 text-left">ACTION</td>
-                </th>  
+                
             </tr>
           </thead>
-          <tbody>        
+               
           {campaigns.map((order, index,) => (
-              <div key={index} >{order._id}
+              <tbody key={index} >
                 {order.campaign.map((subcam, i) => (
                   <tr key={i} className="border-b">
                     <td className='p-5 '>{subcam.campaignname}</td>
                     <td className=" p-5 ">{subcam.period}</td>
                     <td className=" p-5 ">{subcam.reach}</td>
                     <td className=" p-5 ">{subcam.visit}</td>           
-                    <td className=" p-5 ">
-                      
+                    <td className=" p-5 "><Image src={subcam.content} alt={subcam.campaignname} width={150} height={150}/></td>
+                    <td className='p-5'>  
                         <a><button onClick={deleteHandler}>Delete</button></a>
                      
                     </td>
                   </tr>
                 ))}
-              </div>
-              
-            
+              </tbody>          
             ))} 
-          </tbody>
+          
         </table>
       </div>
     )}

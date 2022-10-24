@@ -36,6 +36,10 @@ export default function CampaignHistoryScreen() {
         };
         fetchOrders();
     },[]);
+
+    const editHandler = () => {
+      
+    }
   return (
     <Layout title="Order History">
     <h1 className="mb-4 text-xl">Campaign History</h1>
@@ -47,19 +51,19 @@ export default function CampaignHistoryScreen() {
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead className="border-b">
-            <tr>
-              <th className="px-5 text-left">
+            <tr className="px-5 text-left">
+              
                 <td className="p-5 ">Event Name</td>
                 <td className="p-5 text-left">Event Period</td>
                 <td className="p-5 text-left">AD Reach</td>
                 <td className="p-5 text-left">Landing Page Visitors</td>
                 <td className="p-5 text-left">ACTION</td>
-                </th>  
+               
             </tr>
           </thead>
-          <tbody>        
+                
           {campaigns.map((order, index,) => (
-              <div key={index} >
+              <tbody key={index} >
                 {order.campaign.map((subcam, i) => (
                   <tr key={i} className="border-b">
                     <td className='p-5 '>{subcam.campaignname}</td>
@@ -67,17 +71,17 @@ export default function CampaignHistoryScreen() {
                     <td className=" p-5 ">{subcam.reach}</td>
                     <td className=" p-5 ">{subcam.visit}</td>           
                     <td className=" p-5 ">
-                      <Link href={`/order/${order._id}`} passHref>
-                        <a>Details</a>
-                      </Link>
+                     
+                    <button onClick={editHandler}>Edit</button>    
+                      
                     </td>
                   </tr>
                 ))}
-              </div>
+              </tbody>
               
             
             ))} 
-          </tbody>
+          
         </table>
       </div>
     )}

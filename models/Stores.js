@@ -24,6 +24,19 @@ const usavipstoresSchema = new mongoose.Schema(
                 visit: {type:String},
                 content: {type:String},
             }
+        ],
+        product: [
+                {
+                    productname: {type: String, required: true},
+                    _id: {type: String, index: true, default: 0 },
+                    category: {type: String, required: true},
+                    image: {type: String, required: true},
+                    price: {type: Number, required: true},
+                    brand: {type: String, required: true},
+                    description1: {type: String},
+                    description2: {type: String},                   
+                    description3: {type: String},
+                }
         ]
     }
 );

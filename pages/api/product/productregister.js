@@ -12,31 +12,24 @@ const putHandler = async(req, res) => {
    if(req.method !== 'POST') {
     return
    }
-   const { campaignname, period, reach, visit, content } = req.body;
-//    if( 
-//         req.body
-//    ) {
-//     res.status(422).json({
-//         message: 'Validation Error'
-//     });
-//     return;
-//    }
+   const { productname, price, description1, description2, image } = req.body;
+
    await db.connect();
 //    const newCampaign = {
 //         campaignname, period, reach, visit, content
 //    }
-   const campaign = await UsaVipStores.updateOne(
+   const product = await UsaVipStores.updateOne(
         {name: user.name},
         {
             $push: {
-                campaign: {
-                    campaignname, period, reach, visit, content 
+                product: {
+                    productname, price, description1, description2, image 
                 }
             }
         }
    )
    await db.disconnect();
-   res.send(campaign);
+   res.send(product);
 }
 
 export default putHandler;
