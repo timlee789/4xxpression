@@ -1,5 +1,6 @@
 import { getSession } from 'next-auth/react';
 import Product from '../../../../models/Product';
+import UsaVipStores from '../../../../models/Stores';
 import db from '../../../../utils/db';
 
 const handler = async (req, res) => {
@@ -18,7 +19,7 @@ const handler = async (req, res) => {
 };
 const postHandler = async (req, res) => {
   await db.connect();
-  const newProduct = new Product({
+  const newProduct = new UsaVipStores({
     name: 'sample name',
     slug: 'sample-name-' + Math.random(),
     image: '/images/shirt1.jpg',
@@ -37,7 +38,7 @@ const postHandler = async (req, res) => {
 };
 const getHandler = async (req, res) => {
   await db.connect();
-  const products = await Product.find({});
+  const products = await UsaVipStores.find({});
   await db.disconnect();
   res.send(products);
 };

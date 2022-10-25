@@ -74,7 +74,18 @@ export default function AdminProductScreen() {
     }
   };
 
-  const deleteHandler = async () => {};
+  const deleteHandler = async (productId) => {
+    if (!window.confirm('Are you sure?')) {
+      return;
+    }
+    try {
+      await axios.delete(`/api/admin/products/${productId}`);
+
+      toast.success('Product deleted successfully');
+    } catch (err) {
+      toast.error(getError(err));
+    }
+  };
   return (
     <Layout title="Order History">
       <h1 className="mb-4 text-xl">Product Registration</h1>
@@ -179,8 +190,44 @@ export default function AdminProductScreen() {
                 <td className="p-5 text-left">ACTION</td>
               </tr>
             </thead>
+            {products.map((order) => (
+              <tbody key={order._id}>
+                <tr className="border-b">
+                  <td className="p-5 ">{order.productname}</td>
+                  <td className=" p-5 ">{order.price}</td>
+                  <td className=" p-5 ">{order.description1}</td>
+                  <td className=" p-5 ">{order.description2}</td>
+                  <td className=" p-5 ">
+                    <Image
+                      src={order.image}
+                      alt={order.productname}
+                      width={150}
+                      height={150}
+                    />
+                  </td>
+                  <td className=" p-5 ">
+                    <Link href={`/admin/products/${order._id}`}>
+                      <a type="button" className="default-button">
+                        Edit
+                      </a>
+                    </Link>
+                    &nbsp;
+                  </td>
+                  <td className="p-5">
+                    <a>
+                      <button
+                        onClick={() => deleteHandler(order._id)}
+                        className="default-button"
+                      >
+                        Delete
+                      </button>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
 
-            {products.map((order, index) => (
+            {/* {products.map((order, index) => (
               <tbody key={index}>
                 {order.product.map((subcam, i) => (
                   <tr key={i} className="border-b">
@@ -204,7 +251,7 @@ export default function AdminProductScreen() {
                   </tr>
                 ))}
               </tbody>
-            ))}
+            ))} */}
           </table>
         </div>
       )}

@@ -10,6 +10,7 @@ import Link from 'next/link';
 // import Bundlehair from '../../components/hairs/Bundlehair';
 // import TapeClip from '../../components/hairs/TapeClip';
 import HomePage from '../homepage';
+import HomePage2 from '../homepage2';
 import Layout from '../../components/layout';
 import CustomProductList from '../../components/customproduct';
 import CustomItemScreen from '../../components/customitem';
@@ -90,20 +91,19 @@ function StoreScreen({ store }) {
             />
           </div>
           <div>
-            <HomePage />
-            <div>
-              <div className="2xl:bg-slate-200">
-                <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
-                  {store.product?.map((cam) => (
-                    <CustomItemScreen
-                      key={cam._id}
-                      image={cam.image}
-                      productname={cam.productname}
-                      price={cam.price}
-                    />
-                  ))}
-                </div>
+            <div className="2xl:bg-slate-200">
+              <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
+                {store.product?.map((cam) => (
+                  <CustomItemScreen
+                    key={cam._id}
+                    image={cam.image}
+                    productname={cam.productname}
+                    price={cam.price}
+                  />
+                ))}
               </div>
+
+              <HomePage />
             </div>
           </div>
         </div>

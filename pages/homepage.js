@@ -63,10 +63,7 @@ function HomePage() {
             className="hidden"
           />
         </div> */}
-        <div>
-          {displaybanner}
-          {displaybannerl}
-        </div>
+        <div></div>
         <div className="2xl:bg-slate-200">
           <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
             <Image
@@ -135,6 +132,8 @@ function HomePage() {
               />
             </div>
           </div>
+          {displaybanner}
+          {displaybannerl}
           <div className="p-5 md:hidden">{display1}</div>
           <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4">
             <Image
@@ -167,6 +166,7 @@ function HomePage() {
               className="element"
             />
           </div>
+
           <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4">
             <Image
               src="/images/4X-XPRESSION-4.jpg"

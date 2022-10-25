@@ -1,8 +1,10 @@
 import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
+//import { toToastItem } from 'react-toastify/dist/utils';
 import Layout from '../../components/Layout';
 import { getError } from '../../utils/error';
 
@@ -135,41 +137,53 @@ export default function AdminProdcutsScreen() {
                 <thead className="border-b">
                   <tr>
                     <th className="px-5 text-left">ID</th>
-                    <th className="p-5 text-left">NAME</th>
+                    <th className="p-5 text-left">PRODUCT NAME</th>
                     <th className="p-5 text-left">PRICE</th>
-                    <th className="p-5 text-left">CATEGORY</th>
-                    <th className="p-5 text-left">COUNT</th>
-                    <th className="p-5 text-left">RATING</th>
+                    <th className="p-5 text-left">DESCRIPTION1</th>
+                    <th className="p-5 text-left">DESCRIPTION2</th>
+                    <th className="p-5 text-left">IMAGE</th>
                     <th className="p-5 text-left">ACTIONS</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id} className="border-b">
-                      <td className=" p-5 ">{product._id.substring(20, 24)}</td>
-                      <td className=" p-5 ">{product.name}</td>
-                      <td className=" p-5 ">${product.price}</td>
-                      <td className=" p-5 ">{product.category}</td>
-                      <td className=" p-5 ">{product.countInStock}</td>
-                      <td className=" p-5 ">{product.rating}</td>
-                      <td className=" p-5 ">
-                        <Link href={`/admin/products/${product._id}`}>
-                          <a type="button" className="default-button">
-                            Edit
-                          </a>
-                        </Link>
-                        &nbsp;
-                        <button
-                          onClick={() => deleteHandler(product._id)}
-                          className="default-button"
-                          type="button"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+
+                {products.map((prod, index) => (
+                  <tbody key={index}>
+                    {prod.product.map((subprod) => (
+                      <tr key={subprod._id} className="border-b">
+                        <td className=" p-5 ">
+                          {subprod._id.substring(20, 24)}
+                        </td>
+                        <td className=" p-5 ">{subprod.productname}</td>
+                        <td className=" p-5 ">${subprod.price}</td>
+                        <td className=" p-5 ">{subprod.description1}</td>
+                        <td className=" p-5 ">{subprod.description2}</td>
+                        <td className=" p-5 ">
+                          <Image
+                            src={subprod.image}
+                            alt={subprod.productname}
+                            width={100}
+                            height={100}
+                          />
+                        </td>
+                        <td className=" p-5 ">
+                          <Link href={`/admin/products/${subprod._id}`}>
+                            <a type="button" className="default-button">
+                              Edit
+                            </a>
+                          </Link>
+                          &nbsp;
+                          <button
+                            onClick={() => deleteHandler(product._id)}
+                            className="default-button"
+                            type="button"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ))}
               </table>
             </div>
           )}

@@ -1,5 +1,7 @@
+import mongoose from 'mongoose';
 import { getSession } from 'next-auth/react';
 import Product from '../../../../../models/Product';
+import UsaVipStores from '../../../../../models/Stores';
 import db from '../../../../../utils/db';
 
 const handler = async (req, res) => {
@@ -21,6 +23,7 @@ const handler = async (req, res) => {
 };
 const getHandler = async (req, res) => {
   await db.connect();
+  //const product = await UsaVipStores.find({ product: req.query._id });
   const product = await Product.findById(req.query.id);
   await db.disconnect();
   res.send(product);
@@ -29,13 +32,11 @@ const putHandler = async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);
   if (product) {
-    product.name = req.body.name;
-    product.slug = req.body.slug;
+    product.productname = req.body.productname;
     product.price = req.body.price;
-    product.category = req.body.category;
+    product.description1 = req.body.description1;
     product.image = req.body.image;
-    product.brand = req.body.brand;
-    product.countInStock = req.body.countInStock;
+    product.description2 = req.body.description2;
     product.description = req.body.description;
     await product.save();
     await db.disconnect();
@@ -47,14 +48,24 @@ const putHandler = async (req, res) => {
 };
 const deleteHandler = async (req, res) => {
   await db.connect();
-  const product = await Product.findById(req.query.id);
-  if (product) {
-    await product.remove();
-    await db.disconnect();
-    res.send({ message: 'Product deleted successfully' });
-  } else {
-    await db.disconnect();
-    res.status(404).send({ message: 'Product not found' });
-  }
+  const product = await Product.deleteOne({ _id: req.query.id });
+  // const product = await UsaVipStores.findOneAndUpdate(
+  //   { _id: '62db1fe8e239edf2e7033fb0' },
+  //   {
+  //     $pull: {
+  //       product: {
+  //         _id: '6356c5fa7f0a927d153fa198',
+  //       },
+  //     },
+  //   },
+  //   { $unset: { product: '' } }
+  // );
+
+  await db.disconnect();
+  // if (product) {
+  res.status(404).send({ message: 'Product deleted successfully' });
+  // }
+  //return;
 };
+
 export default handler;
