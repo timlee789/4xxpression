@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import UsaVipStores from '../../models/Stores';
 import db from '../../utils/db';
 import Image from 'next/image';
-import Link from 'next/link';
 // import CustomItemScreen from '../../components/customitem';
 // import Ghanabraid from '../../components/hairs/Ghanabraid';
 // import GhanaTwist from '../../components/hairs/GhanaTwist';
@@ -10,12 +8,13 @@ import Link from 'next/link';
 // import Bundlehair from '../../components/hairs/Bundlehair';
 // import TapeClip from '../../components/hairs/TapeClip';
 import HomePage from '../homepage';
-import HomePage2 from '../homepage2';
 import Layout from '../../components/layout';
-import CustomProductList from '../../components/customproduct';
 import CustomItemScreen from '../../components/customitem';
 
+import Product from '../../models/Product';
+
 function StoreScreen({ store }) {
+  console.log(store);
   //   const [menu, setMenu] = useState('');
   //   if (!store) {
   //     return <div>Product Not Found</div>;
@@ -82,18 +81,19 @@ function StoreScreen({ store }) {
             </a></button></div>
         </div>
         </div> */}
-          <div>
+          {/* <div>
             <Image
               src={store.img1}
               alt={store.name}
               width={1480}
               height={300}
             />
-          </div>
+          </div> */}
+
           <div>
             <div className="2xl:bg-slate-200">
               <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
-                {store.product?.map((cam) => (
+                {store.map((cam) => (
                   <CustomItemScreen
                     key={cam._id}
                     image={cam.image}
@@ -102,7 +102,6 @@ function StoreScreen({ store }) {
                   />
                 ))}
               </div>
-
               <HomePage />
             </div>
           </div>
@@ -117,7 +116,8 @@ export async function getServerSideProps(context) {
   const { storename } = params;
 
   await db.connect();
-  const store = await UsaVipStores.findOne({ storename: storename }).lean();
+  const store = await Product.find({ user: storename }).lean();
+  //.populate('product');
   await db.disconnect();
   return {
     props: {

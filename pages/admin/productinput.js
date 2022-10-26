@@ -5,7 +5,6 @@ import Layout from '../../components/layout';
 import { getError } from '../../utils/error';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -33,6 +32,7 @@ export default function AdminProductScreen() {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function AdminProductScreen() {
     price,
     description1,
     description2,
-    image,
+    imageField,
   }) => {
     try {
       console.log(description1, productname);
@@ -63,7 +63,7 @@ export default function AdminProductScreen() {
         price,
         description1,
         description2,
-        image,
+        imageField,
       });
 
       if (result.error) {
@@ -83,6 +83,29 @@ export default function AdminProductScreen() {
 
       toast.success('Product deleted successfully');
     } catch (err) {
+      toast.error(getError(err));
+    }
+  };
+  const uploadHandler = async (e, imageField = 'image') => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+    try {
+      dispatch({ type: 'UPLOAD_REQUEST' });
+      const {
+        data: { signature, timestamp },
+      } = await axios('/api/admin/cloudinary-sign');
+
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('signature', signature);
+      formData.append('timestamp', timestamp);
+      formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+      const { data } = await axios.post(url, formData);
+      dispatch({ type: 'UPLOAD_SUCCESS' });
+      setValue('imageField', data.secure_url);
+      toast.success('File uploaded successfully');
+    } catch (err) {
+      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
       toast.error(getError(err));
     }
   };
@@ -154,17 +177,30 @@ export default function AdminProductScreen() {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="image">image</label>
+          <label htmlFor="image"></label>
           <input
             type="text"
-            {...register('image', { required: 'Please enter image' })}
             className="w-full"
-            id="image"
-            autoFocus
-          ></input>
-          {errors.image && (
-            <div className="text-red-500"> {errors.image.message}</div>
+            id="imageField"
+            hidden={true}
+            {...register('imageField', {
+              required: 'Please enter image',
+            })}
+          />
+          {errors.imageField && (
+            <div className="text-red-500">{errors.imageField.message}</div>
           )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="imageFile">Upload image</label>
+          <input
+            type="file"
+            className="w-full"
+            id="imageFile"
+            onChange={uploadHandler}
+          />
+
+          {loading && <div>Uploading....</div>}
         </div>
 
         <div className="mb-4">
@@ -206,7 +242,7 @@ export default function AdminProductScreen() {
                     />
                   </td>
                   <td className=" p-5 ">
-                    <Link href={`/admin/products/${order._id}`}>
+                    <Link href={`/admin/userproducts/${order._id}`}>
                       <a type="button" className="default-button">
                         Edit
                       </a>

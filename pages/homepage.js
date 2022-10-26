@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import Layout from '../components/layout';
@@ -73,6 +74,7 @@ function HomePage() {
               height={573}
               className="element1"
             />
+
             <div className="element5 hidden md:block ">{display2}</div>
             <Image
               src="/images/4X-XPRESSION-13.jpg"

@@ -28,7 +28,6 @@ export default function LoginScreen() {
   } = useForm();
 
   const submitHandler = async ({ name, storename, email, password }) => {
-    
     try {
       await axios.post('./api/auth/signup', {
         name,
@@ -149,10 +148,6 @@ export default function LoginScreen() {
 
         <div className="mb-4 ">
           <button className="primary-button">Register</button>
-        </div>
-        <div className="mb-4 ">
-          Don&apos;t have an account? &nbsp;
-          <Link href={`/register?redirect=${redirect || '/'}`}>Register</Link>
         </div>
       </form>
     </Layout>
