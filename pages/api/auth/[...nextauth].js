@@ -32,10 +32,10 @@ export default NextAuth({
         if (user && bcrypt.compare(credentials.password, user.password)) {
           return {
             _id: user._id,
-            name: user.name,
+            name: user.storename,
             email: user.email,
             url: user.url,
-            img1: user.img1,
+            image: 'f',
             isAdmin: user.isAdmin,
           };
         }

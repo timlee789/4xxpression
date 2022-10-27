@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import db from '../../utils/db';
 import Image from 'next/image';
- import CustomItemScreen from '../../components/customitem';
+import CustomItemScreen from '../../components/customitem';
 // import Ghanabraid from '../../components/hairs/Ghanabraid';
 // import GhanaTwist from '../../components/hairs/GhanaTwist';
 // import Destinywig from '../../components/hairs/Destinywig';
@@ -11,11 +11,12 @@ import HomePage from '../homepage';
 import Layout from '../../components/layout';
 import CustomProductList from '../../components/customproduct';
 import Product from '../../models/Product';
+import User from '../../models/Users';
+import HeadBanner from '../../components/headbanner';
 //import User from '../../models/Users'
 
-
-function StoreScreen({ store }) {
- console.log(store)
+function StoreScreen({ store, head }) {
+  console.log(head);
   //console.log(store);
   //   const [menu, setMenu] = useState('');
   //   if (!store) {
@@ -54,15 +55,14 @@ function StoreScreen({ store }) {
   return (
     <Layout>
       <div>
-        {/* <header>
-          <nav className=" lg:flex h-4 items-center px-2 justify-center ">
-            <Link href="#">
-              <a className="text-md font-bold lg:text-3xl lg:text-center">
-                {store.name}
-              </a>
-            </Link>
+        <header>
+          <nav className=" lg:flex h-4 items-center px-2 justify-center mt-20">
+            <a className="text-md font-bold lg:text-3xl lg:text-center"></a>
+            {head.map((heads) => (
+              <HeadBanner key={heads._id} img1={heads.img1} />
+            ))}
           </nav>
-        </header> */}
+        </header>
         <div className="lg:justify-center mt-4">
           {/* <div className='flex justify-center'>
             <div className='flex justify-between p-5 gap-8 '>
@@ -91,21 +91,20 @@ function StoreScreen({ store }) {
               height={300}
             />
           </div> */}
-         
+
           <div>
-            <div className="2xl:bg-slate-200">
+            <div className=" mt-20">
               <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
                 {store.map((sto) => (
-                  <CustomItemScreen 
+                  <CustomItemScreen
                     key={sto._id}
                     productname={sto.productname}
-                    price= {sto.price}
-                    image= {sto.image}
-                    description1 = {sto.description1}
-                    user = {sto.user}
+                    price={sto.price}
+                    image={sto.image}
+                    description1={sto.description1}
+                    user={sto.user}
                   />
                 ))}
-               
               </div>
               <HomePage />
             </div>
@@ -119,14 +118,16 @@ function StoreScreen({ store }) {
 export async function getServerSideProps(context) {
   const { params } = context;
   const { id } = params;
-  console.log(id)
+  console.log(id);
   await db.connect();
-  const store = await Product.find({user: id});
+  const store = await Product.find({ user: id });
+  const userhead = await User.find({ _id: id });
   //.populate('product');
   await db.disconnect();
   return {
     props: {
       store: JSON.parse(JSON.stringify(store)),
+      head: JSON.parse(JSON.stringify(userhead)),
 
       // store: store ? db.convertDocToObj(store) : null,
     },

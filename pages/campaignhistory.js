@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useReducer } from 'react';
-import Link from 'next/link';
+
 import Layout from '../components/layout';
 import { getError } from '../utils/error';
 import Image from 'next/image';
@@ -29,7 +29,7 @@ export default function CampaignHistoryScreen() {
     const fetchOrders = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/campaign/history`);
+        const { data } = await axios.get(`/api/campaign/campaignhistory`);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -60,29 +60,27 @@ export default function CampaignHistoryScreen() {
               </tr>
             </thead>
 
-            {campaigns.map((order, index) => (
-              <tbody key={index}>
-                {order.campaign.map((subcam, i) => (
-                  <tr key={i} className="border-b text-lg ">
-                    <td className="p-5 ">{subcam.campaignname}</td>
-                    <td className=" p-5 ">{subcam.period}</td>
-                    <td className=" p-5 ">{subcam.reach}</td>
-                    <td className=" p-5 ">{subcam.visit}</td>
-                    <td className=" p-5 ">
-                      <Image
-                        src={subcam.content}
-                        alt={subcam.campaignname}
-                        width={100}
-                        height={100}
-                      />
-                    </td>
-                    <td className=" p-5 ">
-                      <button onClick={editHandler}>Edit</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            ))}
+            <tbody>
+              {campaigns.map((subcam) => (
+                <tr key={subcam._id} className="border-b text-lg ">
+                  <td className="p-5 ">{subcam.campaignname}</td>
+                  <td className=" p-5 ">{subcam.period}</td>
+                  <td className=" p-5 ">{subcam.reach}</td>
+                  <td className=" p-5 ">{subcam.visit}</td>
+                  <td className=" p-5 ">
+                    <Image
+                      src={subcam.content}
+                      alt={subcam.campaignname}
+                      width={100}
+                      height={100}
+                    />
+                  </td>
+                  <td className=" p-5 ">
+                    <button onClick={editHandler}>Edit</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       )}

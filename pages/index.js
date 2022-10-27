@@ -6,9 +6,17 @@ import User from '../models/Users';
 export default function Home({ storeinfo }) {
   return (
     <Layout title="Home Page">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5 ml-7 ">
+      <div className="grid grid-cols-1 gap-4 mt-20 md:grid-cols-3 lg:grid-cols-5 ml-7 ">
         {storeinfo.map((sto) => (
-          <StoreInfo storeinfo={sto} key={sto._id} />
+          <StoreInfo
+            key={sto._id}
+            id={sto._id}
+            img1={sto.img1}
+            url={sto.url}
+            state={sto.state}
+            storename={sto.storename}
+            city={sto.city}
+          />
         ))}
       </div>
     </Layout>

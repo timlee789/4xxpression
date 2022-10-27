@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useReducer } from 'react';
 import Link from 'next/link';
-import Layout from '../../components/layout';
-import { getError } from '../../utils/error';
+import Layout from '../../../components/layout';
+import { getError } from '../../../utils/error';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
@@ -38,7 +38,7 @@ export default function AdminProductScreen() {
     const fetchOrders = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get('/api/product/productlist');
+        const { data } = await axios.get('/api/campaign/campaignhistory');
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -48,19 +48,18 @@ export default function AdminProductScreen() {
   }, []);
 
   const submitHandler = async ({
-    productname,
-    price,
-    description1,
-    description2,
+    campaignname,
+    period,
+    reach,
+    visit,
     imageField,
   }) => {
     try {
-      console.log(description1, productname);
-      await axios.post('/api/product/productregister', {
-        productname,
-        price,
-        description1,
-        description2,
+      await axios.post('/api/campaign/campaignregister', {
+        campaignname,
+        period,
+        reach,
+        visit,
         imageField,
       });
 
@@ -108,69 +107,69 @@ export default function AdminProductScreen() {
     }
   };
   return (
-    <Layout title="Order History">
-      <h1 className="mb-4 text-xl">Product Registration</h1>
+    <Layout title="Campaign History">
+      <h1 className="mb-4 text-xl">Campaign Registration</h1>
 
       <form
         className="mx-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}
       >
         <div className="mb-4">
-          <label htmlFor="productname">productname</label>
+          <label htmlFor="campaignname">campaignname</label>
           <input
             type="text"
-            {...register('productname', {
-              required: 'Please enter productname',
+            {...register('campaignname', {
+              required: 'Please enter campaignname',
             })}
             className="w-full"
-            id="productname"
+            id="campaignname"
             autoFocus
           ></input>
-          {errors.productname && (
-            <div className="text-red-500">{errors.productname.message}</div>
+          {errors.campaignname && (
+            <div className="text-red-500">{errors.campaignname.message}</div>
           )}
         </div>
         <div className="mb-4">
-          <label htmlFor="price">price</label>
+          <label htmlFor="period">period</label>
           <input
-            type="price"
-            {...register('price', { required: 'Please enter price' })}
+            type="period"
+            {...register('period', { required: 'Please enter period' })}
             className="w-full"
-            id="price"
+            id="period"
           ></input>
-          {errors.price && (
-            <div className="text-red-500">{errors.price.message}</div>
+          {errors.period && (
+            <div className="text-red-500">{errors.period.message}</div>
           )}
         </div>
         <div className="mb-4">
-          <label htmlFor="description1">description1</label>
+          <label htmlFor="reach">reach</label>
           <input
             type="text"
-            {...register('description1', {
-              required: 'Please enter description1',
+            {...register('reach', {
+              required: 'Please enter reach',
             })}
             className="w-full"
-            id="description1"
+            id="reach"
             autoFocus
           ></input>
-          {errors.description1 && (
-            <div className="text-red-500"> {errors.description1.message}</div>
+          {errors.reach && (
+            <div className="text-red-500"> {errors.reach.message}</div>
           )}
         </div>
 
         <div className="mb-4">
-          <label htmlFor="description2">description2</label>
+          <label htmlFor="visit">visit</label>
           <input
             type="text"
-            {...register('description2', {
-              required: 'Please enter description2',
+            {...register('visit', {
+              required: 'Please enter visit',
             })}
             className="w-full"
-            id="description2"
+            id="visit"
             autoFocus
           ></input>
-          {errors.description2 && (
-            <div className="text-red-500"> {errors.description2.message}</div>
+          {errors.visit && (
+            <div className="text-red-500"> {errors.visit.message}</div>
           )}
         </div>
 
@@ -227,14 +226,14 @@ export default function AdminProductScreen() {
             {products.map((order) => (
               <tbody key={order._id}>
                 <tr className="border-b">
-                  <td className="p-5 ">{order.productname}</td>
-                  <td className=" p-5 ">{order.price}</td>
-                  <td className=" p-5 ">{order.description1}</td>
-                  <td className=" p-5 ">{order.description2}</td>
+                  <td className="p-5 ">{order.campaignname}</td>
+                  <td className=" p-5 ">{order.period}</td>
+                  <td className=" p-5 ">{order.reach}</td>
+                  <td className=" p-5 ">{order.visit}</td>
                   <td className=" p-5 ">
                     <Image
-                      src={order.image}
-                      alt={order.productname}
+                      src={order.content}
+                      alt={order.campaignname}
                       width={150}
                       height={150}
                     />
@@ -260,32 +259,6 @@ export default function AdminProductScreen() {
                 </tr>
               </tbody>
             ))}
-
-            {/* {products.map((order, index) => (
-              <tbody key={index}>
-                {order.product.map((subcam, i) => (
-                  <tr key={i} className="border-b">
-                    <td className="p-5 ">{subcam.productname}</td>
-                    <td className=" p-5 ">{subcam.price}</td>
-                    <td className=" p-5 ">{subcam.description1}</td>
-                    <td className=" p-5 ">{subcam.description2}</td>
-                    <td className=" p-5 ">
-                      <Image
-                        src={subcam.image}
-                        alt={subcam.productname}
-                        width={150}
-                        height={150}
-                      />
-                    </td>
-                    <td className="p-5">
-                      <a>
-                        <button onClick={deleteHandler}>Delete</button>
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            ))} */}
           </table>
         </div>
       )}

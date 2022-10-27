@@ -35,7 +35,7 @@ function Layout({ title, children }) {
 
       <div className="flex min-h-screen flex-col justify-between ">
         <header>
-          <nav className="flex h-12 items-center px-4 justify-between shadow-md">
+          <nav className="flex h-12 items-center px-4 justify-between ">
             <Link href="/">
               <a className="text-lg font-bold">Beauty Elements</a>
             </Link>
@@ -45,7 +45,7 @@ function Layout({ title, children }) {
             ) : session?.user ? (
               <Menu as="div" className="relative inline-block">
                 <Menu.Button className="text-blue-600">
-                  {session.user.name}Hello
+                  {session.user.name}
                 </Menu.Button>
                 <Menu.Items className="absolute right-0 w-56 origin-top-right bg-white  shadow-lg ">
                   <Menu.Item>

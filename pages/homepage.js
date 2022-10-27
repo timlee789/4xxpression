@@ -45,7 +45,7 @@ function HomePage() {
   );
 
   return (
-    <div className="flex justify-center mt-100">
+    <div className="flex justify-center bg-slate-100">
       <div>
         <div className="md:hidden">
           <Image
@@ -65,14 +65,14 @@ function HomePage() {
           />
         </div> */}
         <div></div>
-        <div className="2xl:bg-slate-200">
+        <div>
           <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
             <Image
               src="/images/4X-XPRESSION-2.jpg"
               alt="banner"
               width={300}
               height={573}
-              className="element1"
+              className="element1 card"
             />
 
             <div className="element5 hidden md:block ">{display2}</div>
