@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react"
-import UsaVipStores from "../../../models/Stores";
+import User from "../../../models/Users";
 import db from "../../../utils/db";
 //import StoreScreen from "../../store/[id]";
 
@@ -12,7 +12,7 @@ const handler = async (req, res) => {
     const {user} = session;
     await db.connect();
     //const campaigns = user.name;
-    const campaigns = await UsaVipStores.find({ name: user.name});
+    const campaigns = await User.find({ name: user.name});
     await db.disconnect();
     res.send(campaigns);
     //return  res.status(201).send({message: user.name});

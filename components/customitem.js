@@ -2,12 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 export default function CustomItemScreen(props) {
-  useEffect(() => {
-    const fetchOrders = async () => {
-     
-    };
-    fetchOrders();
-  }, []);
+
   return (
     <div>
       <div className="flex justify-center mt-100">

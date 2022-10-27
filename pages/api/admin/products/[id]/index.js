@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
 import { getSession } from 'next-auth/react';
 import Product from '../../../../../models/Product';
-import UsaVipStores from '../../../../../models/Stores';
 import db from '../../../../../utils/db';
 
 const handler = async (req, res) => {
   const session = await getSession({ req });
-  if (!session || (session && !session.user.isAdmin)) {
+  if (!session ) {
     return res.status(401).send('signin required');
   }
 
@@ -23,7 +22,6 @@ const handler = async (req, res) => {
 };
 const getHandler = async (req, res) => {
   await db.connect();
-  //const product = await UsaVipStores.find({ product: req.query._id });
   const product = await Product.findById(req.query.id);
   await db.disconnect();
   res.send(product);
@@ -69,3 +67,4 @@ const deleteHandler = async (req, res) => {
 };
 
 export default handler;
+

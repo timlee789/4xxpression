@@ -9,13 +9,7 @@ export default function CustomProductList() {
  
     
   
-   
-  useEffect(() => {
-    const fetchOrders = async () => {
-     
-    };
-    fetchOrders();
-  }, []);
+ 
 
 console.log(data)
   return (
