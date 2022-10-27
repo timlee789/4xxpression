@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import db from '../../utils/db';
 import Image from 'next/image';
-// import CustomItemScreen from '../../components/customitem';
+ import CustomItemScreen from '../../components/customitem';
 // import Ghanabraid from '../../components/hairs/Ghanabraid';
 // import GhanaTwist from '../../components/hairs/GhanaTwist';
 // import Destinywig from '../../components/hairs/Destinywig';
@@ -9,12 +9,14 @@ import Image from 'next/image';
 // import TapeClip from '../../components/hairs/TapeClip';
 import HomePage from '../homepage';
 import Layout from '../../components/layout';
-import CustomItemScreen from '../../components/customitem';
-
+import CustomProductList from '../../components/customproduct';
 import Product from '../../models/Product';
+//import User from '../../models/Users'
+
 
 function StoreScreen({ store }) {
-  console.log(store);
+ console.log(store)
+  //console.log(store);
   //   const [menu, setMenu] = useState('');
   //   if (!store) {
   //     return <div>Product Not Found</div>;
@@ -89,18 +91,21 @@ function StoreScreen({ store }) {
               height={300}
             />
           </div> */}
-
+         
           <div>
             <div className="2xl:bg-slate-200">
               <div className=" grid grid-cols-2 p-5 gap-5 md:grid-cols-4 ">
-                {store.map((cam) => (
-                  <CustomItemScreen
-                    key={cam._id}
-                    image={cam.image}
-                    productname={cam.productname}
-                    price={cam.price}
+                {store.map((sto) => (
+                  <CustomItemScreen 
+                    key={sto._id}
+                    productname={sto.productname}
+                    price= {sto.price}
+                    image= {sto.image}
+                    description1 = {sto.description1}
+                    user = {sto.user}
                   />
                 ))}
+               
               </div>
               <HomePage />
             </div>
@@ -113,10 +118,10 @@ function StoreScreen({ store }) {
 
 export async function getServerSideProps(context) {
   const { params } = context;
-  const { storename } = params;
-
+  const { id } = params;
+  console.log(id)
   await db.connect();
-  const store = await Product.find({ user: storename }).lean();
+  const store = await Product.find({user: id});
   //.populate('product');
   await db.disconnect();
   return {

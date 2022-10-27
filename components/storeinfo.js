@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { useEffect } from 'react';
+
 
 function StoreInfo({ storeinfo }) {
+
   return (
     <div className="card mt-5" key={storeinfo._id}>
       <Link href={`/store/${storeinfo._id}`}>

@@ -2,6 +2,12 @@ import React from 'react';
 import Image from 'next/image';
 
 export default function CustomItemScreen(props) {
+  useEffect(() => {
+    const fetchOrders = async () => {
+     
+    };
+    fetchOrders();
+  }, []);
   return (
     <div>
       <div className="flex justify-center mt-100">
@@ -18,6 +24,7 @@ export default function CustomItemScreen(props) {
       <div>{props.productname}</div>
       <div>{props.price}</div>
       <div>{props.description1}</div>
+      <div>{props.user}</div>
     </div>
   );
 }

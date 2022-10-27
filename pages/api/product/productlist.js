@@ -11,6 +11,7 @@ const handler = async (req, res) => {
   }
   const { user } = session;
   await db.connect();
+  console.log(user.password)
   const userid = user._id;
   const products = await Product.find({ user: userid });
   await db.disconnect();
